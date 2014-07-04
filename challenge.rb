@@ -8,15 +8,12 @@
 
 def slice_string(string, slice_size)
   #only works for up to 9 parts
-  if string.length <= slice_size
-    yield string
-  else
-    appender = " - Part 1 of 1"
-    slicerator = string.chars.each_slice(slice_size - appender.length)
-    number_of_slices = slicerator.count
-    slicerator.with_index do |slice, index|
-      yield "#{slice.join} - Part #{index+1} of #{number_of_slices}"
-    end
+  yield string if string.length <= string.size
+  appender = " - Part 1 of 1"
+  slicerator = string.chars.each_slice(slice_size - appender.length)
+  number_of_slices = slicerator.count
+  slicerator.with_index do |slice, index|
+    yield "#{slice.join} - Part #{index+1} of #{number_of_slices}"
   end
 end
 
@@ -29,6 +26,6 @@ def deliver_message_via_carrier(text, to, from)
   puts from
 end
 
-message = "test-test" * 35
+message = "test-test" * 20
 
 slice_string(message, 160) {|slice| deliver_message_via_carrier(slice, :to, :from)}
