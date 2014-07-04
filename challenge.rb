@@ -8,12 +8,14 @@
 
 def slice_string(string, slice_size)
   #only works for up to 9 parts
+  yield string and return if string.length <= slice_size
   appender = " - Part 1 of 1"
   slicerator = string.chars.each_slice(slice_size - appender.length)
   number_of_slices = slicerator.count
   slicerator.with_index do |slice, index|
     yield "#{slice.join} - Part #{index+1} of #{number_of_slices}"
   end
+
 end
 
 
@@ -23,8 +25,9 @@ def deliver_message_via_carrier(text, to, from)
   puts text 
   puts to
   puts from
+  true
 end
 
-message = "test-test" * 45
+message = "test-test" * 50
 
 slice_string(message, 160) {|slice| deliver_message_via_carrier(slice, :to, :from)}
